@@ -167,13 +167,28 @@
 
     .floating-leaf {
       position: absolute;
-      opacity: 0.08;
-      animation: float 8s ease-in-out infinite;
+      opacity: 0.15;
+      animation: float 6s ease-in-out infinite;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     }
 
     @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(5deg); }
+      0%, 100% { 
+        transform: translateY(0) rotate(0deg) scale(1); 
+        opacity: 0.15;
+      }
+      25% {
+        transform: translateY(-15px) rotate(8deg) scale(1.05);
+        opacity: 0.2;
+      }
+      50% { 
+        transform: translateY(-30px) rotate(-5deg) scale(1); 
+        opacity: 0.12;
+      }
+      75% {
+        transform: translateY(-15px) rotate(10deg) scale(0.95);
+        opacity: 0.18;
+      }
     }
 
     .pattern-dots {
