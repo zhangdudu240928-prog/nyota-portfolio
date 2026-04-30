@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyota — AI Product Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&family=Caveat:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* === Wes Anderson × Nordic × Botanical Palette === */
+    :root {
+      --wa-cream: #F4EDE4;
+      --wa-cream-dark: #E8E0D5;
+      --wa-salmon: #E07A5F;
+      --wa-salmon-deep: #C85A3E;
+      --wa-blue: #81B29A;
+      --wa-blue-deep: #5E8B72;
+      --wa-mustard: #E9C46A;
+      --wa-mustard-deep: #D4A83A;
+      --wa-rose: #D4A5A5;
+      --wa-rose-deep: #B88888;
+      --wa-brown: #3D3229;
+      --wa-brown-light: #5A4D42;
+      --wa-brown-muted: #8B7D6B;
+      --wa-sage: #7A8B6E;
+      --wa-sage-deep: #5E6B54;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-hand: 'Caveat', cursive;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--wa-cream);
+      color: var(--wa-brown);
+      line-height: 1.6;
+    }
+
+    /* === Navigation === */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(244, 237, 228, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid var(--wa-brown);
+      padding: 1rem 2rem;
+    }
+
+    nav .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--wa-brown);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--wa-brown-light);
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--wa-salmon);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--wa-salmon);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* === Hero Section === */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, 
+        var(--wa-cream) 0%, 
+        var(--wa-cream) 35%,
+        rgba(224, 122, 95, 0.08) 50%,
+        var(--wa-cream) 65%,
+        rgba(129, 178, 154, 0.08) 85%,
+        var(--wa-cream) 100%
+      );
+      position: relative;
+      padding: 6rem 2rem 4rem;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 700px;
+    }
+
+    .avatar-frame {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 2rem;
+      border: 3px solid var(--wa-brown);
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 4px 4px 0 var(--wa-brown);
+      transform: rotate(-1deg);
+    }
+
+    .lily-icon {
+      width: 100px;
+      height: 100px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 5rem);
+      font-weight: 900;
+      color: var(--wa-brown);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero .subtitle {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--wa-brown-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero .tagline {
+      font-family: var(--font-display);
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      font-weight: 600;
+      color: var(--wa-brown-light);
+      margin-bottom: 1rem;
+    }
+
+    .hero .quote {
+      font-family: var(--font-hand);
+      font-size: 1.3rem;
+      color: var(--wa-salmon-deep);
+      margin-bottom: 2rem;
+    }
+
+    .badges {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .badge {
+      padding: 0.4rem 1rem;
+      border: 2px solid;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .badge.botanical { color: var(--wa-sage); border-color: var(--wa-sage); }
+    .badge.ai { color: var(--wa-salmon); border-color: var(--wa-salmon); }
+    .badge.nordic { color: var(--wa-blue); border-color: var(--wa-blue); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    .scroll-hint span {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--wa-brown-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    /* === Section Styles === */
+    section {
+      padding: 5rem 2rem;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .chapter-num {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      color: var(--wa-brown-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--wa-brown);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+      font-family: var(--font-hand);
+      font-size: 1.2rem;
+      color: var(--wa-brown-muted);
+    }
+
+    /* === About Section === */
+    .about {
+      background: white;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-card {
+      border: 2px solid var(--wa-brown);
+      padding: 2rem;
+      background: var(--wa-cream);
+      text-align: center;
+      transform: rotate(-0.5deg);
+    }
+
+    .about-card .lily-icon {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 1rem;
+    }
+
+    .about-card .latin {
+      font-family: var(--font-hand);
+      font-size: 1.1rem;
+      color: var(--wa-sage);
+    }
+
+    .about-card .note {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--wa-brown-muted);
+      margin-top: 0.5rem;
+    }
+
+    .labels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .label {
+      padding: 0.3rem 0.8rem;
+      border: 1px solid var(--wa-brown-muted);
+      font-size: 0.75rem;
+      color: var(--wa-brown-muted);
+      transform: rotate(-2deg);
+    }
+
+    .about-text h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: var(--wa-brown);
+    }
+
+    .about-text p {
+      margin-bottom: 1rem;
+      color: var(--wa-brown-light);
+    }
+
+    .highlight {
+      background: rgba(224, 122, 95, 0.12);
+      padding: 0.2rem 0.4rem;
+      border-bottom: 2px solid var(--wa-salmon);
+    }
+
+    .beliefs {
+      margin-top: 2rem;
+    }
+
+    .belief-card {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1.5px solid;
+      background: rgba(129, 178, 154, 0.05);
+    }
+
+    .belief-card.salmon { border-color: var(--wa-salmon); background: rgba(224, 122, 95, 0.05); }
+    .belief-card.blue { border-color: var(--wa-blue); background: rgba(129, 178, 154, 0.05); }
+    .belief-card.sage { border-color: var(--wa-sage); background: rgba(122, 139, 110, 0.05); }
+
+    .belief-icon {
+      font-family: var(--font-hand);
+      font-size: 1.5rem;
+      color: var(--wa-salmon);
+      min-width: 40px;
+    }
+
+    .belief-card h4 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .belief-card p {
+      font-size: 0.85rem;
+      color: var(--wa-brown-light);
+      margin: 0;
+    }
+
+    /* === Projects Section === */
+    .projects {
+      background: var(--wa-cream-dark);
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: white;
+      border: 2px solid var(--wa-brown);
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .project-card.life::before { background: var(--wa-blue); }
+    .project-card.edu::before { background: var(--wa-mustard); }
+    .project-card.mind::before { background: var(--wa-rose); }
+
+    .project-card .category {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--wa-brown-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .project-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-card .desc-simple {
+      font-family: var(--font-hand);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .project-card.life .desc-simple { color: var(--wa-blue); }
+    .project-card.edu .desc-simple { color: var(--wa-mustard-deep); }
+    .project-card.mind .desc-simple { color: var(--wa-rose-deep); }
+
+    .project-card p {
+      font-size: 0.85rem;
+      color: var(--wa-brown-light);
+      margin-bottom: 1rem;
+    }
+
+    .ai-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .ai-tag {
+      font-size: 0.65rem;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid;
+      font-family: monospace;
+    }
+
+    .project-card.life .ai-tag { border-color: var(--wa-blue); color: var(--wa-blue); }
+    .project-card.edu .ai-tag { border-color: var(--wa-mustard); color: var(--wa-mustard-deep); }
+    .project-card.mind .ai-tag { border-color: var(--wa-rose); color: var(--wa-rose-deep); }
+
+    .wes-note {
+      font-family: var(--font-hand);
+      font-size: 0.9rem;
+      font-style: italic;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(61, 50, 41, 0.1);
+    }
+
+    /* === Skills === */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .skill-card {
+      background: white;
+      border: 2px solid var(--wa-brown);
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .skill-card h4 {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-card p {
+      font-size: 0.75rem;
+      font-family: monospace;
+      color: var(--wa-brown-muted);
+      white-space: pre-line;
+    }
+
+    /* === Links Section === */
+    .links {
+      background: white;
+    }
+
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .link-card {
+      border: 2px solid var(--wa-brown);
+      padding: 1.5rem;
+    }
+
+    .link-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(61, 50, 41, 0.1);
+    }
+
+    .link-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(61, 50, 41, 0.05);
+    }
+
+    .link-item:last-child {
+      border-bottom: none;
+    }
+
+    .link-item span {
+      font-size: 0.8rem;
+      color: var(--wa-brown-light);
+    }
+
+    .link-item .tag {
+      font-size: 0.65rem;
+      padding: 0.15rem 0.4rem;
+      border: 1px solid;
+    }
+
+    /* === Footer === */
+    footer {
+      background: var(--wa-brown);
+      color: var(--wa-cream);
+      text-align: center;
+      padding: 2rem;
+    }
+
+    footer p {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+
+    /* === Mobile === */
+    @media (max-width: 768px) {
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 5rem 1.5rem 3rem;
+      }
+
+      section {
+        padding: 3rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <a href="#" class="logo">Nyota</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#links">Links</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="avatar-frame">
+        <svg class="lily-icon" viewBox="0 0 100 100" fill="none">
+          <path d="M50 85 C50 85, 45 70, 50 60 C55 70, 50 85, 50 85" stroke="#5E6B54" stroke-width="2" fill="none"/>
+          <ellipse cx="50" cy="55" rx="4" ry="8" fill="#7A8B6E"/>
+          <ellipse cx="42" cy="48" rx="6" ry="4" fill="#8FB085" transform="rotate(-30 42 48)"/>
+          <ellipse cx="58" cy="48" rx="6" ry="4" fill="#8FB085" transform="rotate(30 58 48)"/>
+          <ellipse cx="38" cy="38" rx="5" ry="3.5" fill="#9EAE90" transform="rotate(-20 38 38)"/>
+          <ellipse cx="62" cy="38" rx="5" ry="3.5" fill="#9EAE90" transform="rotate(20 62 38)"/>
+          <ellipse cx="45" cy="30" rx="4" ry="3" fill="#A8B896" transform="rotate(-10 45 30)"/>
+          <ellipse cx="55" cy="30" rx="4" ry="3" fill="#A8B896" transform="rotate(10 55 30)"/>
+          <circle cx="50" cy="25" r="3" fill="#E07A5F" opacity="0.8"/>
+          <circle cx="35" cy="55" r="2" fill="#E07A5F" opacity="0.5"/>
+          <circle cx="65" cy="60" r="1.5" fill="#E9C46A" opacity="0.6"/>
+        </svg>
+      </div>
+      <h1>Nyota</h1>
+      <p class="subtitle">Product Manager · AI Agent Builder · Plant Enthusiast</p>
+      <p class="tagline">希望做出真正好产品的产品经理，让生活更美好。</p>
+      <p class="quote">Designing AI that feels like gardening — patient, intentional, beautifully growing.</p>
+      <div class="badges">
+        <span class="badge botanical">Botanical</span>
+        <span class="badge ai">AI Native</span>
+        <span class="badge nordic">Nordic</span>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll Down</span>
+      <svg width="16" height="24" viewBox="0 0 16 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M8 5v14M2 14l6 6 6-6"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="about">
+    <div class="container">
+      <div class="section-header">
+        <p class="chapter-num">Chapter I</p>
+        <h2>About Me</h2>
+        <p>The gardener behind the products</p>
+      </div>
+      <div class="about-grid">
+        <div>
+          <div class="about-card">
+            <svg class="lily-icon" viewBox="0 0 100 100" fill="none">
+              <path d="M50 85 C50 85, 45 70, 50 60 C55 70, 50 85, 50 85" stroke="#5E6B54" stroke-width="2" fill="none"/>
+              <ellipse cx="50" cy="55" rx="4" ry="8" fill="#7A8B6E"/>
+              <ellipse cx="42" cy="48" rx="6" ry="4" fill="#8FB085" transform="rotate(-30 42 48)"/>
+              <ellipse cx="58" cy="48" rx="6" ry="4" fill="#8FB085" transform="rotate(30 58 48)"/>
+              <ellipse cx="38" cy="38" rx="5" ry="3.5" fill="#9EAE90" transform="rotate(-20 38 38)"/>
+              <ellipse cx="62" cy="38" rx="5" ry="3.5" fill="#9EAE90" transform="rotate(20 62 38)"/>
+              <ellipse cx="45" cy="30" rx="4" ry="3" fill="#A8B896" transform="rotate(-10 45 30)"/>
+              <ellipse cx="55" cy="30" rx="4" ry="3" fill="#A8B896" transform="rotate(10 55 30)"/>
+              <circle cx="50" cy="25" r="3" fill="#E07A5F" opacity="0.8"/>
+            </svg>
+            <p class="latin">Convallaria majalis</p>
+            <p class="note">My spirit flower</p>
+          </div>
+          <div class="labels">
+            <span class="label">Plant Lover</span>
+            <span class="label">AI Explorer</span>
+            <span class="label">Design Thinker</span>
+            <span class="label">Nordic Soul</span>
+          </div>
+        </div>
+        <div class="about-text">
+          <h3>我是一个相信<span class="highlight">好产品像植物一样生长</span>的产品经理。</h3>
+          <p>在北欧学习工业设计的经历，让我学会了用最少的元素表达最多的意义。后来在互联网行业做交互设计，再到头部手机厂商负责 GTM —— 从产品定义到发布交付的完整旅程让我理解了：一个好想法要变成一个好产品，需要审美、工程和商业的精密配合。</p>
+          <p>业余时间我喜欢研究建筑、生活美学和社区公益设计。我相信技术应该服务于人的幸福感，而不是让人成为技术的奴隶。这也是我对 AI 产品设计的核心信念。</p>
+          <div class="beliefs">
+            <div class="belief-card sage">
+              <span class="belief-icon">Patience</span>
+              <div>
+                <h4 style="color: var(--wa-sage);">耐心培育</h4>
+                <p>好的产品像植物，需要合适的土壤、阳光和时间。不追求速成，但追求根深叶茂。</p>
+              </div>
+            </div>
+            <div class="belief-card salmon">
+              <span class="belief-icon">Warmth</span>
+              <div>
+                <h4 style="color: var(--wa-salmon);">有温度的技术</h4>
+                <p>AI 不应该是冰冷的工具，而应该像一个贴心的园丁——理解你、陪伴你、帮助你成长。</p>
+              </div>
+            </div>
+            <div class="belief-card blue">
+              <span class="belief-icon">Minimal</span>
+              <div>
+                <h4 style="color: var(--wa-blue);">北欧式克制</h4>
+                <p>少即是多。每一个功能都应该有存在的理由，每一处设计都服务于用户体验。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="projects">
+    <div class="container">
+      <div class="section-header">
+        <p class="chapter-num">Chapter II</p>
+        <h2>Projects & Vision</h2>
+        <p>Where the garden will grow...</p>
+      </div>
+      <div class="project-grid">
+        <div class="project-card life">
+          <p class="category">Life Enhancement</p>
+          <h3>生活体验提升</h3>
+          <p class="desc-simple">Smart home & daily life optimization</p>
+          <p>用 AI 帮助人们更好地管理日常生活——从空间规划到习惯养成，从家居美学到时间管理。让科技融入生活的质感，而不是制造焦虑。</p>
+          <div class="ai-tags">
+            <span class="ai-tag">Personal Agent</span>
+            <span class="ai-tag">Context-Aware</span>
+            <span class="ai-tag">Habit Intelligence</span>
+          </div>
+          <p class="wes-note" style="color: var(--wa-blue);">"像《月升王国》里 Sam 的野外生存技能——用简单的工具创造精致的生活秩序。"</p>
+        </div>
+        <div class="project-card edu">
+          <p class="category">Personalized Education</p>
+          <h3>个性化教育</h3>
+          <p class="desc-simple">Adaptive learning & tutoring systems</p>
+          <p>面向成人和儿童的个性化教育工具。不是填鸭式灌输，而是根据每个人的认知节奏和学习风格，定制最适合的成长路径。</p>
+          <div class="ai-tags">
+            <span class="ai-tag">Adaptive Learning</span>
+            <span class="ai-tag">Knowledge Graph</span>
+            <span class="ai-tag">AI Tutor</span>
+          </div>
+          <p class="wes-note" style="color: var(--wa-mustard-deep);">"像 Suzy 的画册——每个人都有自己理解和表达世界的方式，教育应该尊重这种独特性。"</p>
+        </div>
+        <div class="project-card mind">
+          <p class="category">Mind & Spirit</p>
+          <h3>身心灵辅助</h3>
+          <p class="desc-simple">Well-being & mindfulness tools</p>
+          <p>关注人的内在世界——情绪管理、正念练习、自我觉察。AI 作为一面温柔的镜子，帮助人更好地认识和理解自己。</p>
+          <div class="ai-tags">
+            <span class="ai-tag">Emotional AI</span>
+            <span class="ai-tag">Mindfulness</span>
+            <span class="ai-tag">Reflective Dialogue</span>
+          </div>
+          <p class="wes-note" style="color: var(--wa-rose-deep);">"像韦斯电影里每个角色的内心独白——有时候我们需要一个安静的倾听者来发现自己。"</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 3rem;">
+        <div class="section-header">
+          <h2 style="font-size: 1.8rem;">AI Expertise</h2>
+          <p>Agent & Beyond</p>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-card" style="border-top-color: var(--wa-salmon);">
+            <h4 style="color: var(--wa-salmon);">Agent Strategy</h4>
+            <p>LLM应用架构
+Agent工作流编排
+AI产品路线</p>
+          </div>
+          <div class="skill-card" style="border-top-color: var(--wa-blue);">
+            <h4 style="color: var(--wa-blue);">Agent Engineering</h4>
+            <p>Prompt工程
+RAG系统设计
+Tool调用</p>
+          </div>
+          <div class="skill-card" style="border-top-color: var(--wa-mustard);">
+            <h4 style="color: var(--wa-mustard-deep);">Product Sense</h4>
+            <p>用户研究
+数据驱动迭代
+AI体验设计</p>
+          </div>
+          <div class="skill-card" style="border-top-color: var(--wa-rose);">
+            <h4 style="color: var(--wa-rose-deep);">Go-to-Market</h4>
+            <p>从0到1
+GTM策略
+用户增长</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Links -->
+  <section id="links" class="links">
+    <div class="container">
+      <div class="section-header">
+        <p class="chapter-num">Chapter III</p>
+        <h2>Links & Knowledge</h2>
+        <p>Let's grow something together</p>
+      </div>
+      <div class="links-grid">
+        <div class="link-card" style="border-left: 4px solid var(--wa-salmon);">
+          <h3 style="color: var(--wa-salmon);">Get in Touch</h3>
+          <div class="link-item">
+            <span>Email</span>
+            <span class="tag" style="border-color: var(--wa-salmon); color: var(--wa-salmon);">Soon</span>
+          </div>
+          <div class="link-item">
+            <span>LinkedIn</span>
+            <span class="tag" style="border-color: var(--wa-salmon); color: var(--wa-salmon);">Soon</span>
+          </div>
+          <div class="link-item">
+            <span>GitHub</span>
+            <span class="tag" style="border-color: var(--wa-salmon); color: var(--wa-salmon);">@zhangdudu240928-prog</span>
+          </div>
+          <div class="link-item">
+            <span>Twitter / X</span>
+            <span class="tag" style="border-color: var(--wa-salmon); color: var(--wa-salmon);">Soon</span>
+          </div>
+        </div>
+        <div class="link-card" style="border-left: 4px solid var(--wa-blue);">
+          <h3 style="color: var(--wa-blue);">Knowledge Base</h3>
+          <p style="font-size: 0.85rem; color: var(--wa-brown-light); margin-bottom: 1rem;">个人知识库，记录我在 AI 产品、设计思维、生活美学等方面的思考和积累。</p>
+          <div class="link-item">
+            <span>AI Agent 笔记</span>
+            <span class="tag" style="border-color: var(--wa-salmon); color: var(--wa-salmon);">AI</span>
+          </div>
+          <div class="link-item">
+            <span>产品设计方法论</span>
+            <span class="tag" style="border-color: var(--wa-blue); color: var(--wa-blue);">Design</span>
+          </div>
+          <div class="link-item">
+            <span>韦斯·安德森美学</span>
+            <span class="tag" style="border-color: var(--wa-rose); color: var(--wa-rose-deep);">Art</span>
+          </div>
+          <div class="link-item">
+            <span>植物养护日记</span>
+            <span class="tag" style="border-color: var(--wa-sage); color: var(--wa-sage);">Life</span>
+          </div>
+          <div class="link-item">
+            <span>读书笔记</span>
+            <span class="tag" style="border-color: var(--wa-mustard); color: var(--wa-mustard-deep);">Read</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Nyota — AI Product Manager & Plant Enthusiast</p>
+    <p style="margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.6;">Designed with patience, like gardening</p>
+  </footer>
+</body>
+</html>
